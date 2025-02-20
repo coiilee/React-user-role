@@ -32,7 +32,7 @@ const Home = () => {
         }
         console.log("user Role",user.userRole);
         switch (user.userRole) {
-            //내일 -> 문자열로 전달받는 값을 형변환해서 switch 문에 전달할 것 
+            //내일 -> 문자열로 전달받는 값을 형변환해서 switch 문에 전달할 것
             case 1, "1":
                 return <AdminComponent/>;
             case 2, "2":
