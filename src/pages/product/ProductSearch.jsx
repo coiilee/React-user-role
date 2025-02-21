@@ -78,26 +78,34 @@ const ProductSearch = () => {
         }
     }
 
+    const handleSug=(sugs)=>{
+        setKeyword(sugs);
+        setShow(false);
+    }
+
     return (
         <div className="productsearch-container">
             <h2>상품 검색</h2>
+            <div>
             <input
                 type="text"
                 value={keyword}
                 onFocus={()=>setShow(true)}
                 onChange={handleChange}
+                onBlur={ ()=> setTimeout( ()=>setShow(false),200  )  }
             />
             {
                 show && sugs.length > 0 && (
                     <ul>
                         {sugs.map((sugs, index) => (
-                            <li key={index}>
+                            <li key={index} onMouseDown={ ()=>handleSug(sugs)}>
                                 {sugs}
                             </li>
                         ))}
                     </ul>
                 )
             }
+            </div>
             <button onClick={searchProducts}>검색</button>
 
             <ul>
