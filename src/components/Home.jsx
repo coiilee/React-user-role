@@ -4,6 +4,8 @@ import CompanyComponent from "../pages/CompanyComponent";
 import axios from "axios";
 import AdminComponent from "../pages/AdminComponent";
 import UserComponent from "../pages/UserComponent";
+import ProductSearch from "../pages/product/ProductSearch";
+import ProductDetail from "../pages/product/ProductDetail";
 
 
 const Home = () => {
@@ -70,35 +72,38 @@ const Home = () => {
             )
 
     }
-    return(
+    return (
         <div>
             <h1>홈페이지</h1>
 
-            {user 
-                
-                ? 
-                
+            {user ? (
                 <div>
-                    
                     <p>환영합니다. {user.userName}님!</p>
                     <button onClick={handleLogout}>로그아웃</button>
 
-
-                    {/* 역할에 따라 다른 컴포넌트 렌더링  */}
+                    {/* 역할에 따라 다른 컴포넌트 렌더링 */}
                     {roleUser()}
-                </div> 
-                
-                : 
-                
-                <div>
-                    <button onClick={ () => navigate("/login")}>로그인</button>
-                    <button onClick={ () => navigate("/")}>회원가입</button>
                 </div>
-            
-            
-            }
+            ) : (
+                <div>
+                    <button onClick={() => navigate("/login")}>로그인</button>
+                    <button onClick={() => navigate("/")}>회원가입</button>
+                </div>
+            )}
+
+            <hr />
+
+
+            <h2>🛒 상품 검색</h2>
+<ProductSearch/>
+
+            <hr />
+
+            <h2>🔍 상품 상세 조회</h2>
+<ProductDetail/>
         </div>
-    )
-}
+    );
+
+};
 
 export default Home;
