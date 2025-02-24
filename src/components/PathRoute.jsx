@@ -11,6 +11,10 @@ import ProtectedRoute from "./ProtectedRoute";
 import CompanyPage from "../pages/CompanyPage";
 import AdminPage from "../pages/AdminPage";
 import UserPage from "../pages/UserPage";
+import PostList from "../pages/posts/PostList";
+import SearchPosts from "../pages/posts/SearchPosts";
+import InsertPost from "../pages/posts/InsertPost";
+import PostDetail from "../pages/posts/PostDetail";
 
 function PathRoute () {
     const[user, setUser] = useState(null);
@@ -25,6 +29,15 @@ function PathRoute () {
             <Routes>
                 {/* 0. 관리자, 회사, 유저에 관계 없이 전체 접근 가능 Components */}
                 <Route path="/" element={<Home/>     } />
+
+                <Route path="/posts" element={<PostList/>}/>
+                <Route path="/posts/:postId" element={<PostDetail/>}/>
+                <Route path="/posts/search" element={<SearchPosts/>}/>
+                <Route path="/posts/create" element={<InsertPost/>}/>
+
+
+
+
                 <Route path="/login" element={<Login setUser={setUser}  />} />
                 {/* 1. 관리자만 접근 가능 Components */}
                 <Route path="/company" element={   <ProtectedRoute allowedRoles={ [1] }>
