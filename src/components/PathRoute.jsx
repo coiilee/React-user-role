@@ -15,6 +15,8 @@ import PostList from "../pages/posts/PostList";
 import SearchPosts from "../pages/posts/SearchPosts";
 import InsertPost from "../pages/posts/InsertPost";
 import PostDetail from "../pages/posts/PostDetail";
+import UpdatePost from "../pages/posts/UpdatePost";
+import Main from "../pages/boot-page/Main";
 
 function PathRoute () {
     const[user, setUser] = useState(null);
@@ -28,12 +30,16 @@ function PathRoute () {
 
             <Routes>
                 {/* 0. 관리자, 회사, 유저에 관계 없이 전체 접근 가능 Components */}
-                <Route path="/" element={<Home/>     } />
+                <Route path="/home" element={<Home/>     } />
+                <Route path="/" element={<Main/>     } />
 
                 <Route path="/posts" element={<PostList/>}/>
                 <Route path="/posts/:postId" element={<PostDetail/>}/>
                 <Route path="/posts/search" element={<SearchPosts/>}/>
                 <Route path="/posts/create" element={<InsertPost/>}/>
+
+                {/*PostDetail 에서 수정 버튼 내부 to 속성에 작성한 경로 값 설정*/}
+                <Route path="/posts/edit/:postId" element={<UpdatePost/>}/>
 
 
 
