@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import apiProductService from "./apiProductService";
 
 const ProductDetail = () => {
     //제품 아이디 변수 이름
@@ -14,16 +15,16 @@ const ProductDetail = () => {
      if(!productId.trim()){
          alert("상품 id를 입력하세요.");
          return;
-     }
-     axios
-         .get(`http://localhost:8080/api/products/${productId}`)
-         .then((res)=> {
-             setProduct(res.data);
-         })
-         .catch((err)=>{
-             alert("데이터 불러오는데 오류 발생");
-
-         });
+     }  apiProductService.getProductById(productId,setProduct);
+     // axios
+     //     .get(`http://localhost:8080/api/products/${productId}`)
+     //     .then((res)=> {
+     //         setProduct(res.data);
+     //     })
+     //     .catch((err)=>{
+     //         alert("데이터 불러오는데 오류 발생");
+     //
+     //     });
     };
 
     return (

@@ -1,6 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import './ProductSearch.css'; //css처럼 기능을 넣지 않고 가져오기만 할때는 ''안에작성
+import './ProductSearch.css';
+import apiProductService from "./apiProductService";
+import {getProducts, getSuggestions} from "./apiProductService";
+import apiService from "../posts/apiService"; //css처럼 기능을 넣지 않고 가져오기만 할때는 ''안에작성
 
 const ProductSearch = () => {
     // 검색 변수 이름
@@ -17,19 +20,13 @@ const ProductSearch = () => {
             alert("검색어를 입력하세요.");  // 검색어가 비어있으면 메시지 표시
             return;  // 함수 종료
         }
-        axios
-            .get(`http://localhost:8080/api/products/search?keyword=${keyword}`)
-            .then((res) => {
-                setProducts(res.data);
-            })
-            .catch(
-                (err) => {
-                    console.log("검색실패 :",err)
-                    setProducts([]);
-                }
-            );
     };
+        apiProductService.getSearchProduct(keyword,setProducts);
 
+
+    useEffect(()=>{
+        apiProductService.getSuggestions(keyword)
+    },[keyword]);
 
     //검색어 필터기능
     const handleChange= (e) => {
@@ -43,34 +40,36 @@ const ProductSearch = () => {
 
         //value 값이 존재한다면, 추천 검색어를 제공
         if(value){
-            axios
-                .get(`http://localhost:8080/api/products/search?keyword=${value}`)
-                .then(
-                    (res)=> {
-                        // res.data 는 배열 형식으로 데이터를 가져올 수 없기 때문에 사용 불가
-                        /*
-                        const 제안리스트 = Array.isArray(res.data)
-                            ?
-                            res.data.map(
-                                (p) => (
-                                    p.productName
-                                )
-                            )
-                            :
-                            [];
+            // axios
+            //     .get(`http://localhost:8080/api/products/search?keyword=${value}`)
+            //     .then(
+            //         (res)=> {
+            //             // res.data 는 배열 형식으로 데이터를 가져올 수 없기 때문에 사용 불가
+            //             /*
+            //             const 제안리스트 = Array.isArray(res.data)
+            //                 ?
+            //                 res.data.map(
+            //                     (p) => (
+            //                         p.productName
+            //                     )
+            //                 )
+            //                 :
+            //                 [];
+            //
+            //              */
+            //             const 제안리스트 = res.data?.map(p=>p.productName) || [];
+            //             setSugs(제안리스트);//백엔드에서 가져온 제안리스트에서 이름만 sugs 변수 이름으로 전달
+            //             setShow(true); //제안 리스트를 sugs 변수이름으로 전달했고, 전달한 값이 존재하면 추천 검색어 보여주기 설정
+            //         }
+            //     )
+            //     .catch(
+            //         (err)=>{
+            //             console.error("추천 검색어 동작 실행 실패:" +err);
+            //             setSugs([]); //새로운 input 값이 들어왔을 때, 문제가 발생하면 기존에 추천한 리스트를 모두 비우기
+            //         }
+            //     )
+            apiProductService.getSuggestions(value,setSugs,setShow);
 
-                         */
-                        const 제안리스트 = res.data?.map(p=>p.productName) || [];
-                        setSugs(제안리스트);//백엔드에서 가져온 제안리스트에서 이름만 sugs 변수 이름으로 전달
-                        setShow(true); //제안 리스트를 sugs 변수이름으로 전달했고, 전달한 값이 존재하면 추천 검색어 보여주기 설정
-                    }
-                )
-                .catch(
-                    (err)=>{
-                        console.error("추천 검색어 동작 실행 실패:" +err);
-                        setSugs([]); //새로운 input 값이 들어왔을 때, 문제가 발생하면 기존에 추천한 리스트를 모두 비우기
-                    }
-                )
         } else {  //추천할 검색어가 없다면 , 한마디로 input이 비어있다면 !!!!
             setSugs([]); //추천 검색어 리스트 비우기
             setShow(false);

@@ -21,7 +21,6 @@ const apiService = {
                 }else{
                     alert("백엔드에서 가져올 데이터 없음");
                 }})
-
             .catch(error => errorCallback(error));
     },
 
