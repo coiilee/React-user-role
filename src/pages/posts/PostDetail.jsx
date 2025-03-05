@@ -3,6 +3,59 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import apiService from "./apiService";
 
 const PostDetail = () => {
+    const navigate = useNavigate();
+    const {postId}=useParams();
+    const [post,setPost]  = useState(null);
+    const [err,setErr] = useState(null);
+
+    useEffect(()=>{
+        apiService.getPostById(postId,setPost,setErr)
+    },[postId]);
+
+    if(!post){
+        return <p>게시물 불러오는 중입니다.</p>
+    }
+
+
+    const handleDelete = ()=> {
+        alert("알람 메세지");
+        prompt("프롬프트 메세지","기본값"); //기본값은 지워도 됨
+        window.confirm("확인 취소 메세지");
+        if(window.confirm("정말 삭제하시겠습니까?")){
+            //apiService 에서 deletePost 메서드 호출한 다음, 기능 샐행
+            apiService.deletePost(1,"삭제성공","삭제실패");
+            //게시물이 삭제된 상태
+            navigate("/posts"); //메인으로 이동하기
+        }
+    }
+
+    return (
+        <section className="py-5">
+            <div className="container px-4 px-lg-5 my-5">
+                <div className="row gx-4 gx-lg-5 align-items-center">
+                    <div className="col-md-6">
+                        <img className="card-img-top mb-5 mb-md-0"
+                             src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..."/>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="small mb-1">{post.postTitle}</div>
+                        <h1 className="display-5 fw-bolder">{post.postContent}</h1>
+
+                    </div>
+
+                    <button className="btn btn-outline-dark flex-shrink-0" type="button">
+                        <Link className="bi-cart-fill me-1" to={`/posts/edit/${postId}`}>수정</Link>
+                    </button>
+                    <button className="btn btn-outline-dark flex-shrink-0" type="button" onClick={handleDelete}>
+                        삭제
+                    </button>
+                </div>
+            </div>
+</section>
+    )
+};
+
+const PostDetails = () => {
     /*
       기본 자바스크립트에서는 페이지를 이동할 때
       window.location.href("이동할 경로")로 페이지 이동
@@ -16,18 +69,17 @@ const PostDetail = () => {
       const navigate = useNavigate()와 같은 형식으로 사용
       navigate(-1) : 뒤 페이지로 이동
       navigate(+1) : 앞 페이지로 이동
-
      */
     const navigate = useNavigate();
-    const {postId}=useParams();
-    const [post,setPost]  = useState(null);
-    const [err,setErr] = useState(null);
+    const {postId} = useParams();
+    const [post, setPost] = useState(null);
+    const [err, setErr] = useState(null);
 
-    useEffect(()=>{
-        apiService.getPostById(postId,setPost,setErr)
-    },[postId]);
+    useEffect(() => {
+        apiService.getPostById(postId, setPost, setErr)
+    }, [postId]);
 
-    if(!post){
+    if (!post) {
         return <p>게시물 불러오는 중입니다.</p>
     }
 
@@ -52,9 +104,9 @@ const PostDetail = () => {
 
      */
 
-    const handleDelete = ()=> {
+    const handleDelete = () => {
         alert("알람 메세지");
-        prompt("프롬프트 메세지","기본값"); //기본값은 지워도 됨
+        prompt("프롬프트 메세지", "기본값"); //기본값은 지워도 됨
         window.confirm("확인 취소 메세지");
         if(window.confirm("정말 삭제하시겠습니까?")){
             //apiService 에서 deletePost 메서드 호출한 다음, 기능 샐행

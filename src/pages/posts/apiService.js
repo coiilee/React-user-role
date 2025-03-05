@@ -65,12 +65,13 @@ const apiService = {
     updatePost: function (postId, postData, callback, errorCallback) {
         axios.put(`${API_BASE_URL}/${postId}`, postData, {
             headers: { "Content-Type": "application/json" }
+
         })
 
             .then((res)=>{
                 if(res.data && res.data.updatedAt){
 
-                alert(callback); //게시물이 수정되었다 표기
+                    alert(callback); //게시물이 수정되었다 표기
                 }else {
                     alert("변경된 내용이 없습니다.");
                 }
