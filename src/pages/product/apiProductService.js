@@ -8,6 +8,7 @@
 // 3. getProductById(keyword)
 
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const API_PRODUCT_URL = "http://localhost:8080/api/products";
 
@@ -38,8 +39,10 @@ AI 학습의 도움을 받을 경우
 
  */
 
+
 const apiProductService
     = {
+
     getProducts: function (setProducts) {
         axios.get(API_PRODUCT_URL)
             .then( //백엔드와 연결 성공
@@ -59,26 +62,30 @@ const apiProductService
             .get(`${API_PRODUCT_URL}/search?keyword=${value}`)
             .then((res) => {
 
-                const 제안리스트 = res.data?.map(p => p.productName) || [];
-                setSugs(제안리스트);
-                setShow(true);
-            }
-    )
+                    const 제안리스트 = res.data?.map(p => p.productName) || [];
+                    setSugs(제안리스트);
+                    setShow(true);
+                }
+            )
             .catch((err) => {
                 alert("데이터 가져오기 실패");
                 console.error("에러 발생: ", err);
                 setSugs([]);
-        })
+            })
     },
 
-    getProductById: function (productId, setProduct, err) {
+    getProductById: function (productId, setProduct) {
         axios
             .get(`${API_PRODUCT_URL}/${productId}`)
             .then( //백엔드 연결 성공
                 (res) => {
                     if (res.data) {
-                        //데이터가 존재할경우, setProduct 로 전달
+                        //res 로 데이터를 1개이상 가져오고 가져온 데이터를 활용해서
+                        // 프론트엔드 UI로 출력할 변수 명칭 작성할 때 활용
+                        console.log("res",res.data)
                         setProduct(res.data);
+                    }else{
+                        console.log("res :", res); //백엔드 연결은 됐지만 문제있는 res 데이터 출력
                     }
                 })
             .catch((err) => { //백엔드 연결 실패
@@ -100,6 +107,39 @@ const apiProductService
                 }
             );
     },
+    updateProduct:function (productId, productData){
+        axios.put(`http://localhost:8080/api/products/${productId}`,productData)
+            .then(
+                (res)=>{
+                    if(res.data){
+                        alert("상품이 성공적으로 수정되었습니다.");
+                    } else {
+                        alert("변경된 내용이 없습니다.");
+                    }
+                }
+            )
+            .catch((err)=>{
+                console.error("error: ", err);
+                alert("데이터 수정에 에러 발생");
+            })
+
+    },
+
+    deleteProduct:function (productId,navigate){
+        axios.delete(`http://localhost:8080/api/products/${productId}`)
+            .then(
+                ()=>{
+                    alert("삭제가 완료되었습니다.");
+                    navigate("/products");
+                }
+            )
+            .catch(
+                (err)=>{
+                    alert("상품을 삭제할 수 없습니다.");
+                    console.error("error",err);
+                }
+            )
+    },
+
 }
 export default apiProductService;
-
