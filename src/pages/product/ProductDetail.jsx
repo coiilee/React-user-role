@@ -26,14 +26,15 @@ const ProductDetail = () => {
             return;
         }
         // 조회 클릭시 api endpoint 로 접근해서 제품 id 에 해당하는 데이터 호출
-        apiProductService.getProductById(productId, setProduct)
+        apiProductService.getProductById(productId, setProduct);
     }
 
     const handleDelete=()=>{
-        apiProductService.deleteProduct(productId,navigate);
+        apiProductService.deleteProduct(productId);
     }
 
     const handleEdit=()=>{
+        apiProductService.updateProduct(productId,navigate);
         navigate(`/products/edit/${productId}`);
     }
 

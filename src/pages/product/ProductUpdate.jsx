@@ -4,6 +4,9 @@ import apiProductService from "./apiProductService";
 
 const ProductUpdate = () => {
     const {productId}=useParams();
+    const [productName, setProductName] =useState("");
+    const [productPrice, setProductPrice] =useState("");
+    const [productCategory, setproductCategory] =useState("");
     const navigate= useNavigate();
     const [product,setProduct]= useState({
                   productName:"",
@@ -15,11 +18,22 @@ const ProductUpdate = () => {
             //useState 로 기본 상태 값 설정해 두는 것
 
     useEffect(() => {
-        apiProductService.getProductById(productId);
+        apiProductService.getProductById(productId, (data)=>{
+
+        });
     }, []);
 
+
     const handleUpdate = () => {
-        apiProductService.updateProduct(productId,product); //현재 상태값인 product를 api로 전달
+
+            const productData={
+                productId: productId,
+                setProductName: productName,
+                setProductPrice: productPrice,
+                setproductCategory: productCategory,
+            };
+        apiProductService.updateProduct(productId,productData);
+        //현재 상태값인 product를 api로 전달
     }
 
     const handleChange=(e)=>{
